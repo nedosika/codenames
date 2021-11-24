@@ -4,7 +4,7 @@ import FirebaseService from "../services/Firebase";
 const WordsContext = createContext({});
 
 export const useWords = () => {
-    const {words} = FirebaseService.useStreamCollection("words");
+    const {documents: words} = FirebaseService.useStreamCollection("words");
 
     return {words}
 }

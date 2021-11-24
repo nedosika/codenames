@@ -1,4 +1,5 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 import Layout from "../../layout";
 import {experimentalStyled as styled} from '@mui/material/styles';
@@ -8,6 +9,8 @@ import Grid from '@mui/material/Grid';
 
 import background from "../../assets/images/card.png";
 import {useWords} from "../../hooks/useWords";
+import {CardContent} from "@mui/material";
+import AddWordsButton from "./AddWordsButton";
 
 const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
@@ -33,11 +36,17 @@ const Words = () => {
                     {
                         words.map((word) =>
                             <Grid item xs={2} sm={2} md={2} key={word.id}>
-                                <Item elevation={3}>{word.text}</Item>
+                                <Item elevation={3}>
+                                    <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
+                                        {word.value}
+                                    </CardContent>
+                                </Item>
                             </Grid>)
                     }
                 </Grid>
             </Box>
+            <Outlet/>
+            <AddWordsButton/>
         </Layout>
     );
 };

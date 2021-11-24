@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter} from "react-router-dom";
 
-import Words from "./pages/Words";
 import {WordsProvider} from "./hooks/useWords";
+import Router from "./router";
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <WordsProvider>
-                <Words/>
-            </WordsProvider>
-        </BrowserRouter>
+        <WordsProvider>
+            <Router/>
+        </WordsProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
