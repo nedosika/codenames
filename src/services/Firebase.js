@@ -46,35 +46,26 @@ export const streamAuth = (observer) =>
 export const signUp = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
 
-export const createUser = (user) =>
-    createUserWithEmailAndPassword(auth, user.email, user.password);
-
 export const SignIn = (email, password) =>
     signInWithEmailAndPassword(auth, email, password);
 
 export const signOut = () =>
     auth.signOut();
 
-export const streamCollection = (path, observer) =>
-    onSnapshot(collection(db, path), observer);
-
-export const getCollection = (path) =>
-    getDocs(collection(db, path));
-
 export const getDocById = (path, id) =>
     getDoc(doc(db, path, id));
-
-export const updateDocById = (path, id, data) =>
-    setDoc(doc(db, path, id), {...data});
-
-export const updateCollection = (path, data) =>
-    updateDoc(doc(collection(db, path)), data);
 
 export const addDocument = (path, data) =>
     addDoc(collection(db, path), {...data});
 
+export const updateDocById = (path, id, data) =>
+    setDoc(doc(db, path, id), {...data});
+
 export const deleteDocument = (path, id) =>
     deleteDoc(doc(db, path, id));
+
+export const updateCollection = (path, data) =>
+    updateDoc(doc(collection(db, path)), data);
 
 export const useCollection = (path) => {
     const [documents, setDocuments] = useState([]);
@@ -106,6 +97,7 @@ export const useStreamCollection = (path) => {
 
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, path), (docs) => {
+            setIsFetching(true);
             const documents = [];
 
             docs.forEach((doc) => {
@@ -135,15 +127,12 @@ export default {
     signUp,
     SignIn,
     signOut,
-    createUser,
     streamAuth,
     getDocById,
     addDocument,
     useCollection,
-    getCollection,
     updateDocById,
     deleteDocument,
-    streamCollection,
     updateCollection,
     useStreamCollection,
 };
