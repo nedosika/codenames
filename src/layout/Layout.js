@@ -93,7 +93,7 @@ const Layout = ({title, children}) => {
                     </List>
                 </Box>
             </Drawer>
-            <Box sx={{marginTop: 10}}>
+            <Box>
                 {children}
             </Box>
         </div>

@@ -30,7 +30,7 @@ const Words = () => {
 
     return (
         <Layout title='Words'>
-            <Box sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Box sx={{margin: '80px auto 0', maxWidth: '1040px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {
                     words.map((word) =>
                         <Item elevation={3} key={word.id}>
