@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 
 import Layout from "../../layout";
 import {experimentalStyled as styled} from '@mui/material/styles';
@@ -21,29 +21,25 @@ const Item = styled(Paper)(({theme}) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
     height: 100,
-    width: 166
+    minWidth: 166,
+    margin: '5px'
 }));
 
 const Words = () => {
     const {words} = useWords();
 
-    console.log(words)
-
     return (
         <Layout title='Words'>
-            <Box sx={{flexGrow: 1}}>
-                <Grid container spacing={{xs: 2, md: 3}} columns={{xs: 10, sm: 10, md: 10}}>
-                    {
-                        words.map((word) =>
-                            <Grid item xs={2} sm={2} md={2} key={word.id}>
-                                <Item elevation={3}>
-                                    <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
-                                        {word.value}
-                                    </CardContent>
-                                </Item>
-                            </Grid>)
-                    }
-                </Grid>
+            <Box sx={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                {
+                    words.map((word) =>
+                        <Item elevation={3} key={word.id}>
+                            <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
+                                {word.value}
+                            </CardContent>
+                        </Item>
+                    )
+                }
             </Box>
             <Outlet/>
             <AddWordsButton/>
