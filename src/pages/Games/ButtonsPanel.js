@@ -4,8 +4,9 @@ import {useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 import AddIcon from '@mui/icons-material/Add';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
-const AddWordsButton = () => {
+const ButtonsPanel = ({onResetGame}) => {
     const navigate = useNavigate();
 
     const handleOpenCreateProcessDialog = () => {
@@ -19,6 +20,9 @@ const AddWordsButton = () => {
                 right: 16,
                 '& > :not(style)': {m: 1}
             }}>
+                <Fab color="primary" onClick={onResetGame}>
+                    <AutorenewIcon/>
+                </Fab>
                 <Fab color="primary" onClick={handleOpenCreateProcessDialog}>
                     <AddIcon/>
                 </Fab>
@@ -26,4 +30,4 @@ const AddWordsButton = () => {
         );
 };
 
-export default AddWordsButton;
+export default ButtonsPanel;

@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 
 import background from "../../assets/images/card.png";
 import {CardContent} from "@mui/material";
-import AddWordsButton from "./AddWordsButton";
+import ButtonsPanel from "./ButtonsPanel";
 import {useGames} from "../../hooks/useGames";
 
 const Item = styled(Paper)(({theme}) => ({
@@ -26,10 +26,8 @@ const Item = styled(Paper)(({theme}) => ({
 
 const Games = () => {
     const params = useParams();
-    const {games} = useGames(params.id);
+    const {games, resetGame} = useGames(params.id);
     const game = games[0];
-
-    //console.log(game)
 
     return (
         <Layout title='Games'>
@@ -41,7 +39,7 @@ const Games = () => {
                 flexWrap: 'wrap'
             }}>
                 {
-                    game.words.map((word) =>
+                    game?.words?.map((word) =>
                         <Item elevation={3} key={word.id}>
                             <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
                                 {word.value}
@@ -51,7 +49,7 @@ const Games = () => {
                 }
             </Box>
             <Outlet/>
-            <AddWordsButton/>
+            <ButtonsPanel onResetGame={() => resetGame(params.id)}/>
         </Layout>
     );
 };

@@ -6,18 +6,17 @@ const WordsContext = createContext({});
 
 export const useWords = (ids) => {
     const {words} = useContext(WordsContext);
-    const [filteredWords, setFilteredWords] = useState([]);
+    //const [filteredWords, setFilteredWords] = useState([]);
 
     const getWord = (id) => words.find((word) => word.id === id);
 
-    useEffect(() => {
-        const filteredWords = [];
-        words.forEach((word) => {
-            if(ids?.includes(word.id))
-                filteredWords.push(word);
-        });
-        setFilteredWords(filteredWords);
-    }, [words, ids]);
+
+    // useEffect(() => {
+    //     const filteredWords = ids?.map((id) => words?.find((word) => word.id === id));
+    //     setFilteredWords([...filteredWords]);
+    // }, [words, ids]);
+
+    //console.log(filteredWords)
 
     const updateWord = (word) =>
         FirestoreService
@@ -33,7 +32,15 @@ export const useWords = (ids) => {
         FirestoreService
             .deleteDocument("words", id);
 
-    return {words: ids ? filteredWords : words, getWord, addWords, updateWord, deleteWord}
+    return {
+        words: ids
+            ? ids?.map((id) => words?.find((word) => word.id === id))
+            : words,
+        getWord,
+        addWords,
+        updateWord,
+        deleteWord
+    }
 }
 
 export const WordsProvider = ({children}) => {
