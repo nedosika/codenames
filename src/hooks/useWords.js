@@ -4,19 +4,16 @@ import FirestoreService, {useStreamCollection} from "../services/Firestore";
 
 const WordsContext = createContext({});
 
-export const useWords = (ids) => {
+export const useWords = () => {
     const {words} = useContext(WordsContext);
-    //const [filteredWords, setFilteredWords] = useState([]);
 
     const getWord = (id) => words.find((word) => word.id === id);
 
+    const getShuffledWords = (count = 25) =>
+        words.sort((a, b) => 0.5 - Math.random()).slice(0, count);
 
-    // useEffect(() => {
-    //     const filteredWords = ids?.map((id) => words?.find((word) => word.id === id));
-    //     setFilteredWords([...filteredWords]);
-    // }, [words, ids]);
-
-    //console.log(filteredWords)
+    const getGameWords = (ids) =>
+        ids?.map((id) => words?.find((word) => word.id === id));
 
     const updateWord = (word) =>
         FirestoreService
@@ -33,13 +30,13 @@ export const useWords = (ids) => {
             .deleteDocument("words", id);
 
     return {
-        words: ids
-            ? ids?.map((id) => words?.find((word) => word.id === id))
-            : words,
+        words,
         getWord,
         addWords,
         updateWord,
-        deleteWord
+        deleteWord,
+        getGameWords,
+        getShuffledWords
     }
 }
 
