@@ -9,7 +9,7 @@ const AddWordsButton = () => {
     const navigate = useNavigate();
 
     const handleOpenCreateProcessDialog = () => {
-        navigate(`/words/add`);
+        navigate(`add`);
     };
 
         return (

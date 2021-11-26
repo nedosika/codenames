@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import {useNavigate} from "react-router-dom";
 import {useWords} from "../../hooks/useWords";
 
-const AddWordsDialog = () => {
+const AddWordDialog = () => {
     const navigate = useNavigate();
     const [words, setWords] = React.useState('');
     const {addWords} = useWords();
@@ -38,4 +38,4 @@ const AddWordsDialog = () => {
     );
 };
 
-export default AddWordsDialog;
+export default AddWordDialog;

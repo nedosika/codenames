@@ -1,16 +1,15 @@
 import React from 'react';
-import {Outlet} from 'react-router-dom';
+import {Outlet, useParams} from 'react-router-dom';
 
 import Layout from "../../layout";
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
 
 import background from "../../assets/images/card.png";
-import {useWords} from "../../hooks/useWords";
 import {CardContent} from "@mui/material";
-import AddWordButton from "./AddWordButton";
+import AddWordsButton from "./AddWordsButton";
+import {useGames} from "../../hooks/useGames";
 
 const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
@@ -25,14 +24,24 @@ const Item = styled(Paper)(({theme}) => ({
     margin: '5px'
 }));
 
-const Words = () => {
-    const {words} = useWords();
+const Games = () => {
+    const params = useParams();
+    const {games} = useGames(params.id);
+    const game = games[0];
+
+    //console.log(game)
 
     return (
-        <Layout title='Words'>
-            <Box sx={{margin: '80px auto 0', maxWidth: '1040px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Layout title='Games'>
+            <Box sx={{
+                margin: '80px auto 0',
+                maxWidth: '1040px',
+                display: 'flex',
+                justifyContent: 'center',
+                flexWrap: 'wrap'
+            }}>
                 {
-                    words.map((word) =>
+                    game.words.map((word) =>
                         <Item elevation={3} key={word.id}>
                             <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
                                 {word.value}
@@ -42,9 +51,9 @@ const Words = () => {
                 }
             </Box>
             <Outlet/>
-            <AddWordButton/>
+            <AddWordsButton/>
         </Layout>
     );
 };
 
-export default Words;
+export default Games;

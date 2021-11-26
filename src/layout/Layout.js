@@ -90,6 +90,16 @@ const Layout = ({title, children}) => {
                             </ListItemIcon>
                             <ListItemText primary='Board'/>
                         </ListItem>
+                        <ListItem
+                            button
+                            selected={location.pathname.split('/')[1] === 'games'}
+                            onClick={() => navigate('/games/7W4gccMNsgyktqRi2gVv')}
+                        >
+                            <ListItemIcon>
+                                <Assignment/>
+                            </ListItemIcon>
+                            <ListItemText primary='Games'/>
+                        </ListItem>
                     </List>
                 </Box>
             </Drawer>
