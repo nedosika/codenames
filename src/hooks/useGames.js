@@ -8,7 +8,7 @@ const GamesContext = createContext({});
 export const useGames = (id) => {
     const {games} = useContext(GamesContext);
     const game = games?.find((game) => game.id === id);
-    const {getShuffledWords, getGameWords} = useWords();
+    const {getShuffledWords, getWords} = useWords();
 
     const updateGame = () => {
 
@@ -20,7 +20,7 @@ export const useGames = (id) => {
             .updateDocById('games', id, {id, words: shuffledWords.map((word) => word.id)})
     }
 
-    return {games: id ? [{...game, words: getGameWords(game?.words)}] : games, resetGame};
+    return {games: id ? [{...game, words: getWords(game?.words)}] : games, resetGame};
 }
 
 export const GamesProvider = ({children}) => {
