@@ -1,50 +1,63 @@
-import React from 'react';
-import {Outlet} from 'react-router-dom';
+import * as React from 'react';
+import {DataGrid} from '@mui/x-data-grid';
 
-import Layout from "../../layout";
-import {experimentalStyled as styled} from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-
-import background from "../../assets/images/card.png";
+import Alert from '@mui/material/Alert';
 import {useWords} from "../../hooks/useWords";
-import {CardContent} from "@mui/material";
-import AddWordButton from "./AddWordButton";
+import Layout from "../../layout";
+import Button from "@mui/material/Button";
 
-const Item = styled(Paper)(({theme}) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    backgroundImage: `url(${background})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "contain",
-    height: 100,
-    minWidth: 166,
-    margin: '5px'
-}));
-
-const Words = () => {
+export default function Words() {
     const {words} = useWords();
+    const [editRowsModel, setEditRowsModel] = React.useState({});
+
+    const handleEditRowsModelChange = React.useCallback((model) => {
+        setEditRowsModel(model);
+    }, []);
 
     return (
-        <Layout title='Words'>
-            <Box sx={{margin: '80px auto 0', maxWidth: '1040px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-                {
-                    words.map((word) =>
-                        <Item elevation={3} key={word.id}>
-                            <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
-                                {word.value}
-                            </CardContent>
-                        </Item>
-                    )
-                }
-            </Box>
-            <Outlet/>
-            <AddWordButton/>
+        <Layout title="Words">
+            <div style={{height: 'calc(100vh - 95px)', marginTop: 80}}>
+                <DataGrid
+                    rows={words}
+                    columns={columns}
+                    editRowsModel={editRowsModel}
+                    editMode="row"
+                    onEditRowsModelChange={handleEditRowsModelChange}
+                />
+            </div>
         </Layout>
     );
-};
+}
 
-export default Words;
+const columns = [
+    {field: 'value', headerName: 'Word', width: 180, editable: true},
+    {field: 'ru', headerName: 'Russian', editable: true},
+    {
+        field: 'create',
+        headerName: 'Date Created',
+        type: 'date',
+        width: 180,
+        editable: true,
+    },
+    {
+        field: 'edit',
+        headerName: 'Last Edited',
+        type: 'dateTime',
+        width: 220,
+        editable: true,
+    },
+    {
+        field: 'actions',
+        headerName: 'Actions',
+        width: 220,
+        type: 'actions',
+        editable: true,
+        getActions: ({id}) => {
+            return([
+                <Button onClick={() => alert(id)}>Save</Button>,
+                <Button onClick={() => alert(id)}>Cancel</Button>
+
+            ])
+        }
+    },
+];
