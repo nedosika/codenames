@@ -14,9 +14,56 @@ export default function Words() {
     const apiRef = useGridApiRef();
     const {words} = useWords();
     const [editRowsModel, setEditRowsModel] = React.useState({});
+    const [selectedCellParams, setSelectedCellParams] = React.useState(null);
+
+    console.log(selectedCellParams)
+
+    const handleCellClick = React.useCallback((params) => {
+        setSelectedCellParams(params);
+    }, []);
 
     const handleEditRowsModelChange = React.useCallback((model) => {
         setEditRowsModel(model);
+    }, []);
+
+    const handleCancelClick = (id) => (event) => {
+        event.stopPropagation();
+        apiRef.current.setRowMode(id, 'view');
+
+        const row = apiRef.current.getRow(id);
+        if (row.isNew) {
+            apiRef.current.updateRows([{ id, _action: 'delete' }]);
+        }
+    };
+
+    const handleEditClick = (id) => (event) => {
+        event.stopPropagation();
+        apiRef.current.setRowMode(id, 'edit');
+    };
+
+    const handleDeleteClick = (id) => (event) => {
+        event.stopPropagation();
+        apiRef.current.updateRows([{ id, _action: 'delete' }]);
+    };
+
+    const handleClick = () => {
+        if (!selectedCellParams) {
+            return;
+        }
+        const { id, field, cellMode } = selectedCellParams;
+        if (cellMode === 'edit') {
+            //apiRef.current.commitCellChange({ id, field });
+            //apiRef.current.setCellMode(id, field, 'view');
+            setSelectedCellParams({ ...selectedCellParams, cellMode: 'view' });
+        } else {
+            //apiRef.current.setCellMode(id, field, 'edit');
+            setSelectedCellParams({ ...selectedCellParams, cellMode: 'edit' });
+        }
+    };
+
+    const handleDoubleCellClick = React.useCallback((params, event) => {
+        console.log(params)
+        event.defaultMuiPrevented = true;
     }, []);
 
     const columns = [
@@ -41,18 +88,38 @@ export default function Words() {
             headerName: 'Actions',
             width: 100,
             type: 'actions',
-            getActions: ({id}) => {
+            getActions: (action) => {
+                const { id, cellMode } = selectedCellParams;
+                const isInEditMode = cellMode === 'edit' && action.id === id;
+
+                if (isInEditMode) {
+                    return [
+                        <GridActionsCellItem
+                            icon={<SaveIcon />}
+                            label="Save"
+                            onClick={handleClick}
+                            color="primary"
+                        />,
+                        <GridActionsCellItem
+                            icon={<CancelIcon />}
+                            label="Cancel"
+                            onClick={handleClick}
+                            color="inherit"
+                        />,
+                    ];
+                }
+
                 return([
                     <GridActionsCellItem
                         icon={<EditIcon />}
                         label="Edit"
-                        onClick={() => {}}
+                        onClick={handleClick}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
-                        onClick={() => {}}
+                        onClick={handleClick}
                         color="inherit"
                     />,
                 ])
@@ -70,6 +137,11 @@ export default function Words() {
                     editRowsModel={editRowsModel}
                     editMode="row"
                     onEditRowsModelChange={handleEditRowsModelChange}
+                    // onRowSelected={(parmas) => {
+                    //     console.log(Array.from(parmas.api.current.getSelectedRows().entries()));
+                    // }}
+                    onCellDoubleClick={handleDoubleCellClick}
+                    onCellClick={handleCellClick}
                 />
             </div>
         </Layout>
