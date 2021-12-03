@@ -41,6 +41,11 @@ const Games = () => {
         })
     }
 
+    const handleResetGame = () => {
+        setBoard([]);
+        resetGame(id)
+    }
+
     return (
         <Layout title='Games'>
             <Box sx={{
@@ -61,7 +66,7 @@ const Games = () => {
                 }
             </Box>
             <Outlet/>
-            <ButtonsPanel onResetGame={() => resetGame(id)}/>
+            <ButtonsPanel onResetGame={handleResetGame}/>
         </Layout>
     );
 };
