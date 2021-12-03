@@ -13,9 +13,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 
-function EditToolbar(props) {
+function EditToolbar({numSelected}) {
+    console.log(numSelected)
     return (
         <Box
             sx={{
@@ -23,11 +25,20 @@ function EditToolbar(props) {
                 borderColor: 'divider',
             }}
         >
-            <Tooltip title="Delete" sx={{margin: '5px'}}>
-                <IconButton>
-                    <DeleteIcon/>
-                </IconButton>
-            </Tooltip>
+            {numSelected > 0 ? (
+                <Tooltip title="Delete" sx={{margin: '5px'}}>
+                    <IconButton>
+                        <DeleteIcon/>
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <Tooltip title="Filter list" sx={{margin: '5px'}}>
+                    <IconButton>
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
+            )}
+
         </Box>
     );
 }
@@ -35,10 +46,16 @@ function EditToolbar(props) {
 export default function Words() {
     const {words} = useWords();
     const [editRowsModel, setEditRowsModel] = React.useState({});
+    const [numSelected, setNumSelected] = React.useState(0);
 
     const handleEditRowsModelChange = React.useCallback((model) => {
         setEditRowsModel(model);
     }, []);
+
+    const handleStateChange = (params) => {
+        setNumSelected(params?.selection?.length)
+        console.log(params)
+    }
 
     const columns = [
         {field: 'value', headerName: 'Word', width: 180, editable: true},
@@ -64,6 +81,7 @@ export default function Words() {
             <div style={{height: 'calc(100vh - 95px)', marginTop: 80}}>
                 <DataGrid
                     components={{Toolbar: EditToolbar}}
+                    componentsProps={{numSelected}}
                     rows={words}
                     columns={columns}
                     editRowsModel={editRowsModel}
@@ -71,6 +89,7 @@ export default function Words() {
                     disableSelectionOnClick
                     onEditRowsModelChange={handleEditRowsModelChange}
                     checkboxSelection
+                    onStateChange={handleStateChange}
                 />
             </div>
         </Layout>
