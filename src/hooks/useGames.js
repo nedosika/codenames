@@ -10,7 +10,7 @@ export const useGames = (id) => {
     const game = games?.find((game) => game.id === id);
     const {getShuffledWords, getWords} = useWords();
 
-    const updateGame = () => {
+    const updateGame = (game) => {
 
     }
 
@@ -20,7 +20,7 @@ export const useGames = (id) => {
             .updateDocById('games', id, {id, words: shuffledWords.map((word) => word.id)})
     }
 
-    return {games: id ? [{...game, words: getWords(game?.words)}] : games, resetGame};
+    return {games: id ? [{...game, words: getWords(game?.words)}] : games, resetGame, updateGame};
 }
 
 export const GamesProvider = ({children}) => {

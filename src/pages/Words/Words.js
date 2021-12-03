@@ -54,10 +54,10 @@ export default function Words() {
         if (cellMode === 'edit') {
             //apiRef.current.commitCellChange({ id, field });
             //apiRef.current.setCellMode(id, field, 'view');
-            setSelectedCellParams({ ...selectedCellParams, cellMode: 'view' });
+            setSelectedCellParams({ ...selectedCellParams, cellMode: 'view'});
         } else {
             //apiRef.current.setCellMode(id, field, 'edit');
-            setSelectedCellParams({ ...selectedCellParams, cellMode: 'edit' });
+            setSelectedCellParams({ ...selectedCellParams, cellMode: 'edit', hasFocus: true  });
         }
     };
 
@@ -89,8 +89,9 @@ export default function Words() {
             width: 100,
             type: 'actions',
             getActions: (action) => {
-                const { id, cellMode } = selectedCellParams;
-                const isInEditMode = cellMode === 'edit' && action.id === id;
+                //const { cellMode } = selectedCellParams;
+                //const isInEditMode = cellMode === 'edit' && action.id === id;
+                const isInEditMode = false
 
                 if (isInEditMode) {
                     return [
