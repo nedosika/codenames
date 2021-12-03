@@ -11,7 +11,7 @@ import {CardContent} from "@mui/material";
 import ButtonsPanel from "./ButtonsPanel";
 import {useGames} from "../../hooks/useGames";
 
-const COLORS = ['black', 'red', 'blue', 'yellow'];
+const COLORS = ['red', 'blue', 'yellow', 'black'];
 
 const Item = styled(Paper)(({borderColor, theme}) => ({
         ...theme.typography.body2,
@@ -34,16 +34,20 @@ const Games = () => {
     const game = games[0];
     const [board, setBoard] = React.useState([]);
 
-    const handleClick = (word, color = 0) => (event) => {
+    console.log(board)
+
+    const handleClick = (id) => (event) => {
+        const color = board[id]?.color > 3 ? 0 : board[id]?.color + 1 || 0;
+
         setBoard({
             ...board,
-            [word]: {color: color > 3 ? 0 : color + 1}
+            [id]: {color}
         })
     }
 
     const handleResetGame = () => {
         setBoard([]);
-        resetGame(id)
+        resetGame(id);
     }
 
     return (
@@ -57,7 +61,12 @@ const Games = () => {
             }}>
                 {
                     game?.words?.map((word) =>
-                        <Item elevation={3} key={word.id} onClick={handleClick(word.id, board[word.id]?.color)} borderColor={COLORS[board[word.id]?.color]}>
+                        <Item
+                            elevation={3}
+                            key={word.id}
+                            onClick={handleClick(word.id)}
+                            borderColor={COLORS[board[word.id]?.color]}
+                        >
                             <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
                                 {word.value}
                             </CardContent>
