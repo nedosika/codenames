@@ -34,8 +34,6 @@ const Games = () => {
     const game = games[0];
     const [board, setBoard] = React.useState([]);
 
-    console.log(board)
-
     const handleClick = (word, color = 0) => (event) => {
         setBoard({
             ...board,
