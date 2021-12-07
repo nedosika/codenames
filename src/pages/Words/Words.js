@@ -1,23 +1,16 @@
 import * as React from 'react';
-import {DataGrid, useGridApiRef, GridActionsCellItem} from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 
-import Alert from '@mui/material/Alert';
-import {useWords} from "../../hooks/useWords";
-import Layout from "../../layout";
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
+import Layout from "../../layout";
+import {useWords} from "../../hooks/useWords";
 
 function EditToolbar({numSelected}) {
-    console.log(numSelected)
     return (
         <Box
             sx={{
@@ -34,7 +27,7 @@ function EditToolbar({numSelected}) {
             ) : (
                 <Tooltip title="Filter list" sx={{margin: '5px'}}>
                     <IconButton>
-                        <FilterListIcon />
+                        <FilterListIcon/>
                     </IconButton>
                 </Tooltip>
             )}
@@ -52,10 +45,10 @@ export default function Words() {
         setEditRowsModel(model);
     }, []);
 
-    const handleStateChange = (params) => {
+
+    const handleStateChange = React.useCallback((params) => {
         setNumSelected(params?.selection?.length)
-        console.log(params)
-    }
+    }, []);
 
     const columns = [
         {field: 'value', headerName: 'Word', width: 180, editable: true},
@@ -81,7 +74,7 @@ export default function Words() {
             <div style={{height: 'calc(100vh - 95px)', marginTop: 80}}>
                 <DataGrid
                     components={{Toolbar: EditToolbar}}
-                    componentsProps={{numSelected}}
+                    componentsProps={{toolbar: {numSelected}}}
                     rows={words}
                     columns={columns}
                     editRowsModel={editRowsModel}
