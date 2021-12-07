@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Layout from "../../layout";
 import {useWords} from "../../hooks/useWords";
 
-function EditToolbar({numSelected}) {
+function EditToolbar({numSelected, onDeleteWords}) {
     return (
         <Box
             sx={{
@@ -20,7 +20,7 @@ function EditToolbar({numSelected}) {
         >
             {numSelected > 0 ? (
                 <Tooltip title="Delete" sx={{margin: '5px'}}>
-                    <IconButton>
+                    <IconButton onClick={onDeleteWords}>
                         <DeleteIcon/>
                     </IconButton>
                 </Tooltip>
@@ -37,18 +37,22 @@ function EditToolbar({numSelected}) {
 }
 
 export default function Words() {
-    const {words} = useWords();
+    const {words, deleteWord} = useWords();
     const [editRowsModel, setEditRowsModel] = React.useState({});
-    const [numSelected, setNumSelected] = React.useState(0);
+    const [selected, setSelected] = React.useState(0);
 
     const handleEditRowsModelChange = React.useCallback((model) => {
         setEditRowsModel(model);
     }, []);
 
-
     const handleStateChange = React.useCallback((params) => {
-        setNumSelected(params?.selection?.length)
+        setSelected(params?.selection)
     }, []);
+
+    const handleDeleteSelectedWords = () => {
+        console.log('delete')
+       // setEditRowsModel()
+    }
 
     const columns = [
         {field: 'value', headerName: 'Word', width: 180, editable: true},
@@ -74,7 +78,7 @@ export default function Words() {
             <div style={{height: 'calc(100vh - 95px)', marginTop: 80}}>
                 <DataGrid
                     components={{Toolbar: EditToolbar}}
-                    componentsProps={{toolbar: {numSelected}}}
+                    componentsProps={{toolbar: {numSelected: selected?.length, onDeleteWords: handleDeleteSelectedWords}}}
                     rows={words}
                     columns={columns}
                     editRowsModel={editRowsModel}
