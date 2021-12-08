@@ -12,8 +12,8 @@ export const useWords = () => {
     const getShuffledWords = (count = 25) =>
         words.sort((a, b) => 0.5 - Math.random()).slice(0, count);
 
-    const getWords = (ids) =>
-        ids?.map((id) => words?.find((word) => word.id === id));
+    const getWords = (items) =>
+        items?.map(({id}) => words?.find((word) => word.id === id));
 
     const updateWord = (word) =>
         FirestoreService
