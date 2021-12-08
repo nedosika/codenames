@@ -1,7 +1,8 @@
 import React, {createContext, useContext} from "react";
-import {useStreamCollection} from "../services/Firestore";
+
 import {useWords} from "./useWords";
 import FirestoreService from "../services/Firestore";
+import {useStreamCollection} from "../services/Firestore";
 
 const GamesContext = createContext({});
 
@@ -10,17 +11,23 @@ export const useGames = (id) => {
     const game = games?.find((game) => game.id === id);
     const {getShuffledWords, getWords} = useWords();
 
-    const updateGame = (game) => {
-
+    const updateGame = (id, game) => {
+        FirestoreService
+            .updateDocById('games', id, {...game})
     }
 
     const resetGame = (id) => {
         const shuffledWords = getShuffledWords(25);
         FirestoreService
-            .updateDocById('games', id, {id, words: shuffledWords.map((word) => word.id)})
+            .updateDocById('games', id, {id, words: shuffledWords.map((word) => ({id: word.id}))})
     }
 
-    return {games: id ? [{...game, words: getWords(game?.words)}] : games, resetGame, updateGame};
+    return {
+        games:
+            id
+                ? [{...game, words: getWords(game?.words)}]
+                : games, resetGame, updateGame
+    };
 }
 
 export const GamesProvider = ({children}) => {

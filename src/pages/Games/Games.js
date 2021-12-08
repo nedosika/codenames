@@ -1,15 +1,15 @@
 import React from 'react';
 import {Outlet, useParams} from 'react-router-dom';
 
-import Layout from "../../layout";
-import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-
-import background from "../../assets/images/card.png";
 import {CardContent} from "@mui/material";
+import {experimentalStyled as styled} from '@mui/material/styles';
+
+import Layout from "../../layout";
 import ButtonsPanel from "./ButtonsPanel";
 import {useGames} from "../../hooks/useGames";
+import background from "../../assets/images/card.png";
 
 const COLORS = ['red', 'blue', 'yellow', 'black'];
 
@@ -30,23 +30,34 @@ const Item = styled(Paper)(({borderColor, theme}) => ({
 
 const Games = () => {
     const {id} = useParams();
-    const {games, resetGame} = useGames(id);
+    const {games, updateGame, resetGame} = useGames(id);
     const game = games[0];
-    const [board, setBoard] = React.useState([]);
-
-    console.log(board)
+    //const [board, setBoard] = React.useState([]);
 
     const handleClick = (id) => (event) => {
-        const color = board[id]?.color > 3 ? 0 : board[id]?.color + 1 || 0;
+        //const color = board[id]?.color > 3 ? 0 : board[id]?.color + 1 || 0;
 
-        setBoard({
-            ...board,
-            [id]: {color}
-        })
+        // setBoard({
+        //     ...board,
+        //     [id]: {color}
+        // })
+
+        const word = game.words?.find((item) => item.id === id);
+        console.log(word)
+        const color = word.color > 3 ? 0 : word.color + 1 || 0;
+
+        console.log(color)
+
+        updateGame(game.id, {...game, words: game.words.map((word) => {
+            if(word.id === id){
+                return {...word, color}
+            }
+            return {...word}
+            })});
     }
 
     const handleResetGame = () => {
-        setBoard([]);
+        //setBoard([]);
         resetGame(id);
     }
 
@@ -65,7 +76,7 @@ const Games = () => {
                             elevation={3}
                             key={word.id}
                             onClick={handleClick(word.id)}
-                            borderColor={COLORS[board[word.id]?.color]}
+                            borderColor={COLORS[word.color]}
                         >
                             <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
                                 {word.value}

@@ -1,23 +1,16 @@
 import * as React from 'react';
-import {DataGrid, useGridApiRef, GridActionsCellItem} from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 
-import Alert from '@mui/material/Alert';
-import {useWords} from "../../hooks/useWords";
-import Layout from "../../layout";
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
+import Layout from "../../layout";
+import {useWords} from "../../hooks/useWords";
 
-function EditToolbar({numSelected}) {
-    console.log(numSelected)
+function EditToolbar({numSelected, onDeleteWords}) {
     return (
         <Box
             sx={{
@@ -27,14 +20,14 @@ function EditToolbar({numSelected}) {
         >
             {numSelected > 0 ? (
                 <Tooltip title="Delete" sx={{margin: '5px'}}>
-                    <IconButton>
+                    <IconButton onClick={onDeleteWords}>
                         <DeleteIcon/>
                     </IconButton>
                 </Tooltip>
             ) : (
                 <Tooltip title="Filter list" sx={{margin: '5px'}}>
                     <IconButton>
-                        <FilterListIcon />
+                        <FilterListIcon/>
                     </IconButton>
                 </Tooltip>
             )}
@@ -44,17 +37,21 @@ function EditToolbar({numSelected}) {
 }
 
 export default function Words() {
-    const {words} = useWords();
+    const {words, deleteWord} = useWords();
     const [editRowsModel, setEditRowsModel] = React.useState({});
-    const [numSelected, setNumSelected] = React.useState(0);
+    const [selected, setSelected] = React.useState(0);
 
     const handleEditRowsModelChange = React.useCallback((model) => {
         setEditRowsModel(model);
     }, []);
 
-    const handleStateChange = (params) => {
-        setNumSelected(params?.selection?.length)
-        console.log(params)
+    const handleStateChange = React.useCallback((params) => {
+        setSelected(params?.selection)
+    }, []);
+
+    const handleDeleteSelectedWords = () => {
+        console.log('delete')
+       // setEditRowsModel()
     }
 
     const columns = [
@@ -81,7 +78,7 @@ export default function Words() {
             <div style={{height: 'calc(100vh - 95px)', marginTop: 80}}>
                 <DataGrid
                     components={{Toolbar: EditToolbar}}
-                    componentsProps={{numSelected}}
+                    componentsProps={{toolbar: {numSelected: selected?.length, onDeleteWords: handleDeleteSelectedWords}}}
                     rows={words}
                     columns={columns}
                     editRowsModel={editRowsModel}
