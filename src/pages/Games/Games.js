@@ -43,7 +43,8 @@ const Games = () => {
         // })
 
         const word = game.words?.find((item) => item.id === id);
-        const color = word.color > 3 ? 0 : word.color + 1;
+        console.log(word)
+        const color = word.color > 3 ? 0 : word.color + 1 || 0;
 
         console.log(color)
 
