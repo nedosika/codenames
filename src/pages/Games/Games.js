@@ -14,18 +14,18 @@ import background from "../../assets/images/card.png";
 const COLORS = ['red', 'blue', 'yellow', 'black'];
 
 const Item = styled(Paper)(({borderColor, theme}) => ({
-        ...theme.typography.body2,
-        cursor: 'pointer',
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        backgroundImage: `url(${background})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "contain",
-        height: 100,
-        minWidth: 166,
-        margin: '5px',
-        boxShadow: `inset 0px 0px 25px 5px ${borderColor}`
+    ...theme.typography.body2,
+    cursor: 'pointer',
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    backgroundImage: `url(${background})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "contain",
+    height: 100,
+    minWidth: 166,
+    margin: '5px',
+    boxShadow: `inset 0px 0px 25px 5px ${borderColor}`
 }));
 
 const Games = () => {
@@ -43,17 +43,24 @@ const Games = () => {
         // })
 
         const word = game.words?.find((item) => item.id === id);
-        console.log(word)
+        //console.log(word)
         const color = word.color > 3 ? 0 : word.color + 1 || 0;
 
-        console.log(color)
+        //console.log(color)
 
-        updateGame(game.id, {...game, words: game.words.map((word) => {
-            if(word.id === id){
-                return {...word, color}
-            }
-            return {...word}
-            })});
+        const newGame = {
+            ...game,
+            words: game.words.map((word) => {
+                if (word.id === id) {
+                    const newWord = {...word, color}
+                    return {...newWord}
+                }
+                return {...word}
+            })
+        }
+        console.log(newGame)
+
+        updateGame(game.id, newGame);
     }
 
     const handleResetGame = () => {
@@ -71,17 +78,21 @@ const Games = () => {
                 flexWrap: 'wrap'
             }}>
                 {
-                    game?.words?.map((word) =>
-                        <Item
-                            elevation={3}
-                            key={word.id}
-                            onClick={handleClick(word.id)}
-                            borderColor={COLORS[word.color]}
-                        >
-                            <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
-                                {word.value}
-                            </CardContent>
-                        </Item>
+                    game?.words?.map((word) => {
+                            console.log(word)
+                            return (
+                                <Item
+                                    elevation={3}
+                                    key={word.id}
+                                    onClick={handleClick(word.id)}
+                                    borderColor={COLORS[word.color]}
+                                >
+                                    <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
+                                        {word.value}
+                                    </CardContent>
+                                </Item>)
+
+                        }
                     )
                 }
             </Box>
