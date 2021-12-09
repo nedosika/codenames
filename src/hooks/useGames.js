@@ -11,15 +11,15 @@ export const useGames = (id) => {
     const game = games?.find((game) => game.id === id);
     const {getShuffledWords, getWords} = useWords();
 
-    const updateGame = (id, game) => {
+    const updateGame = (game) => {
         FirestoreService
-            .updateDocById('games', id, {...game})
+            .updateDocById('games', game.id, game)
     }
 
     const resetGame = (id) => {
-        const shuffledWords = getShuffledWords(25);
+        const shuffledWords = getShuffledWords(25).map((word) => ({id: word.id}))
         FirestoreService
-            .updateDocById('games', id, {id, words: shuffledWords.map((word) => ({id: word.id}))})
+            .updateDocById('games', id, {id, words: shuffledWords})
     }
 
     return {

@@ -13,7 +13,10 @@ export const useWords = () => {
         words.sort((a, b) => 0.5 - Math.random()).slice(0, count);
 
     const getWords = (items) =>
-        items?.map(({id}) => words?.find((word) => word.id === id));
+        items?.map((item) => ({
+            ...words?.find((word) => word.id === item.id),
+            ...item
+        }));
 
     const updateWord = (word) =>
         FirestoreService

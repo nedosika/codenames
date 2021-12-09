@@ -32,39 +32,24 @@ const Games = () => {
     const {id} = useParams();
     const {games, updateGame, resetGame} = useGames(id);
     const game = games[0];
-    //const [board, setBoard] = React.useState([]);
 
     const handleClick = (id) => (event) => {
-        //const color = board[id]?.color > 3 ? 0 : board[id]?.color + 1 || 0;
-
-        // setBoard({
-        //     ...board,
-        //     [id]: {color}
-        // })
-
         const word = game.words?.find((item) => item.id === id);
-        //console.log(word)
         const color = word.color > 3 ? 0 : word.color + 1 || 0;
-
-        //console.log(color)
 
         const newGame = {
             ...game,
             words: game.words.map((word) => {
-                if (word.id === id) {
-                    const newWord = {...word, color}
-                    return {...newWord}
-                }
+                if (word.id === id)
+                    return {...word, color}
                 return {...word}
             })
         }
-        console.log(newGame)
 
-        updateGame(game.id, newGame);
+        updateGame(newGame);
     }
 
     const handleResetGame = () => {
-        //setBoard([]);
         resetGame(id);
     }
 
@@ -79,7 +64,6 @@ const Games = () => {
             }}>
                 {
                     game?.words?.map((word) => {
-                            console.log(word)
                             return (
                                 <Item
                                     elevation={3}
