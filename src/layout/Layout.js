@@ -82,13 +82,13 @@ const Layout = ({title, children}) => {
                         </ListItem>
                         <ListItem
                             button
-                            selected={location.pathname.split('/')[1] === 'board'}
-                            onClick={() => navigate('/board')}
+                            selected={location.pathname.split('/')[1] === 'boards'}
+                            onClick={() => navigate('/boards')}
                         >
                             <ListItemIcon>
                                 <Assignment/>
                             </ListItemIcon>
-                            <ListItemText primary='Board'/>
+                            <ListItemText primary='Boards'/>
                         </ListItem>
                         <ListItem
                             button
@@ -98,7 +98,7 @@ const Layout = ({title, children}) => {
                             <ListItemIcon>
                                 <Assignment/>
                             </ListItemIcon>
-                            <ListItemText primary='Games'/>
+                            <ListItemText primary='Codenames'/>
                         </ListItem>
                     </List>
                 </Box>

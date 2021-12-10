@@ -1,5 +1,4 @@
 import React from 'react';
-import {Outlet, useParams} from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -7,13 +6,11 @@ import {CardContent} from "@mui/material";
 import {experimentalStyled as styled} from '@mui/material/styles';
 
 import Layout from "../../layout";
-import ButtonsPanel from "./ButtonsPanel";
-import {useGames} from "../../hooks/useGames";
 import background from "../../assets/images/card.png";
 
 const COLORS = ['red', 'blue', 'yellow', 'black'];
 
-const Item = styled(Paper)(({borderColor, theme}) => ({
+const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
     cursor: 'pointer',
     padding: theme.spacing(2),
@@ -25,36 +22,11 @@ const Item = styled(Paper)(({borderColor, theme}) => ({
     height: 100,
     minWidth: 166,
     margin: '5px',
-    boxShadow: `inset 0px 0px 25px 5px ${borderColor}`
 }));
 
-const Games = () => {
-    const {id} = useParams();
-    const {games, updateGame, resetGame} = useGames(id);
-    const game = games[0];
-
-    const handleClick = (id) => (event) => {
-        const word = game.words?.find((item) => item.id === id);
-        const color = word.color > 3 ? 0 : word.color + 1 || 0;
-
-        const newGame = {
-            ...game,
-            words: game.words.map((word) => {
-                if (word.id === id)
-                    return {...word, color}
-                return {...word}
-            })
-        }
-
-        updateGame(newGame);
-    }
-
-    const handleResetGame = () => {
-        resetGame(id);
-    }
-
+const Boards = () => {
     return (
-        <Layout title='Codenames'>
+        <Layout title='Boards generator'>
             <Box sx={{
                 margin: '80px auto 0',
                 maxWidth: '1040px',
@@ -63,24 +35,20 @@ const Games = () => {
                 flexWrap: 'wrap'
             }}>
                 {
-                    game?.words?.map((word) =>
+                    []?.words?.map((word) =>
                         <Item
                             elevation={3}
                             key={word.id}
-                            onClick={handleClick(word.id)}
-                            borderColor={COLORS[word.color]}
                         >
                             <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
-                                {word.value}
+
                             </CardContent>
                         </Item>
                     )
                 }
             </Box>
-            <Outlet/>
-            <ButtonsPanel onResetGame={handleResetGame}/>
         </Layout>
     );
 };
 
-export default Games;
+export default Boards;

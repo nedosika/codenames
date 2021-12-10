@@ -17,7 +17,7 @@ export const useGames = (id) => {
     }
 
     const resetGame = (id) => {
-        const shuffledWords = getShuffledWords(25).map((word) => ({id: word.id}))
+        const shuffledWords = getShuffledWords(25);
         FirestoreService
             .updateDocById('games', id, {id, words: shuffledWords})
     }
@@ -26,7 +26,9 @@ export const useGames = (id) => {
         games:
             id
                 ? [{...game, words: getWords(game?.words)}]
-                : games, resetGame, updateGame
+                : games,
+        resetGame,
+        updateGame
     };
 }
 

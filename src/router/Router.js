@@ -5,6 +5,7 @@ import Words from "../pages/Words";
 import AddWordDialog from "../pages/Words/AddWordDialog";
 import Games from "../pages/Games";
 import AddWordsDialog from "../pages/Games/AddWordsDialog";
+import Boards from "../pages/Boards";
 
 const Router = () => {
     return (
@@ -16,6 +17,9 @@ const Router = () => {
                 </Route>
                 <Route path="games/:id" element={<Games/>}>
                     <Route path="add" element={<AddWordsDialog/>}/>
+                </Route>
+                <Route path="boards" element={<Boards/>}>
+
                 </Route>
             </Routes>
         </BrowserRouter>
