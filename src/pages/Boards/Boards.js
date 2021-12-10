@@ -6,12 +6,15 @@ import {CardContent} from "@mui/material";
 import {experimentalStyled as styled} from '@mui/material/styles';
 
 import Layout from "../../layout";
-import background from "../../assets/images/card.png";
+import background from "../../assets/images/board.png";
+import red from "../../assets/images/red.png";
+import blue from "../../assets/images/blue.png";
+import black from "../../assets/images/black.png";
+import yellow from "../../assets/images/neutral.png";
 
-const COLORS = ['red', 'blue', 'yellow', 'black'];
+const COLORS = [red, blue, yellow, black];
 
-const Item = styled(Paper)(({theme}) => ({
-    ...theme.typography.body2,
+const Item = styled('div')(({background ,theme}) => ({
     cursor: 'pointer',
     padding: theme.spacing(2),
     textAlign: 'center',
@@ -19,30 +22,30 @@ const Item = styled(Paper)(({theme}) => ({
     backgroundImage: `url(${background})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
-    height: 100,
-    minWidth: 166,
-    margin: '5px',
+    height: 15,
+    width: 15,
+    margin: '2px',
 }));
 
 const Boards = () => {
+    const board = new Array(25).fill(0)
     return (
         <Layout title='Boards generator'>
             <Box sx={{
                 margin: '80px auto 0',
-                maxWidth: '1040px',
+                width: '512px',
+                height: '512px',
                 display: 'flex',
                 justifyContent: 'center',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
+                backgroundImage: `url(${background})`,
+                backgroundSize: "contain",
             }}>
                 {
-                    []?.words?.map((word) =>
+                    board.map(() =>
                         <Item
-                            elevation={3}
-                            key={word.id}
+                            background={COLORS[2]}
                         >
-                            <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
-
-                            </CardContent>
                         </Item>
                     )
                 }
