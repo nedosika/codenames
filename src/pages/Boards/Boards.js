@@ -14,42 +14,35 @@ import yellow from "../../assets/images/neutral.png";
 
 const COLORS = [red, blue, yellow, black];
 
-const Item = styled('div')(({background ,theme}) => ({
-    cursor: 'pointer',
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+const Item = styled('div')(({background}) => ({
     backgroundImage: `url(${background})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
-    height: 15,
-    width: 15,
-    margin: '2px',
+    height: 65,
+    width: 65,
 }));
 
 const Boards = () => {
     const board = new Array(25).fill(0)
     return (
         <Layout title='Boards generator'>
-            <Box sx={{
+            <div style={{
                 margin: '80px auto 0',
                 width: '512px',
                 height: '512px',
                 display: 'flex',
-                justifyContent: 'center',
                 flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-around',
                 backgroundImage: `url(${background})`,
                 backgroundSize: "contain",
+                boxSizing: 'border-box',
+                padding: 65
             }}>
                 {
-                    board.map(() =>
-                        <Item
-                            background={COLORS[2]}
-                        >
-                        </Item>
-                    )
+                    board.map(() => <Item background={COLORS[2]}/>)
                 }
-            </Box>
+            </div>
         </Layout>
     );
 };
