@@ -1,8 +1,5 @@
 import React from 'react';
 
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import {CardContent} from "@mui/material";
 import {experimentalStyled as styled} from '@mui/material/styles';
 
 import Layout from "../../layout";
@@ -23,7 +20,10 @@ const Item = styled('div')(({background}) => ({
 }));
 
 const Boards = () => {
-    const board = new Array(25).fill(0)
+    const board = [3, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1];
+    board.push(Number(Math.random() > 0.5));
+    board.sort((a, b) => 0.5 - Math.random());
+
     return (
         <Layout title='Boards generator'>
             <div style={{
@@ -40,7 +40,7 @@ const Boards = () => {
                 padding: 65
             }}>
                 {
-                    board.map(() => <Item background={COLORS[2]}/>)
+                    board.map((item) => <Item background={COLORS[item]}/>)
                 }
             </div>
         </Layout>
