@@ -1,7 +1,9 @@
 import React from 'react';
+import {Outlet, useParams} from 'react-router-dom';
 
 import Layout from "../../layout";
 import red from "../../assets/images/red.png";
+import {useGames} from "../../hooks/useGames";
 import blue from "../../assets/images/blue.png";
 import black from "../../assets/images/black.png";
 import yellow from "../../assets/images/neutral.png";
@@ -13,6 +15,7 @@ import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import {experimentalStyled as styled} from '@mui/material/styles';
+
 
 const COLORS = [red, blue, yellow, black];
 
@@ -57,10 +60,13 @@ const ButtonsPanel = styled(Box)(() => ({
 }));
 
 const Boards = () => {
-    const [board, setBoard] = React.useState({
-        items: [],
-        gameColor: null
-    });
+    const {id} = useParams();
+    const {games, updateGame, resetGame} = useGames(id);
+    const {board} = games[0];
+    // const [board, setBoard] = React.useState({
+    //     items: [],
+    //     gameColor: null
+    // });
 
     const initBoard = () => {
         const board = [3, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -69,15 +75,11 @@ const Boards = () => {
 
         board.push(owner);
         board.sort((a, b) => 0.5 - Math.random());
-        setBoard({
-            items: [...board],
-            gameColor
-        });
+        // setBoard({
+        //     items: [...board],
+        //     gameColor
+        // });
     }
-
-    React.useEffect(() => {
-        initBoard();
-    }, [])
 
     return (
         <Layout title='Boards generator'>
@@ -102,6 +104,7 @@ const Boards = () => {
                     board?.items.map((item) => <Item background={COLORS[item]}/>)
                 }
             </Board>
+            <Outlet/>
             <ButtonsPanel>
                 <Fab color="primary" onClick={initBoard}>
                     <AutorenewIcon/>
