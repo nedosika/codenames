@@ -83,7 +83,7 @@ const Layout = ({title, children}) => {
                         <ListItem
                             button
                             selected={location.pathname.split('/')[1] === 'boards'}
-                            onClick={() => navigate('/boards')}
+                            onClick={() => navigate('/boards/7W4gccMNsgyktqRi2gVv')}
                         >
                             <ListItemIcon>
                                 <Assignment/>

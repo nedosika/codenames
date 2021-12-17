@@ -62,11 +62,7 @@ const ButtonsPanel = styled(Box)(() => ({
 const Boards = () => {
     const {id} = useParams();
     const {games, updateGame, resetGame} = useGames(id);
-    const {board} = games[0];
-    // const [board, setBoard] = React.useState({
-    //     items: [],
-    //     gameColor: null
-    // });
+    const game = games[0];
 
     const initBoard = () => {
         const board = [3, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -75,10 +71,8 @@ const Boards = () => {
 
         board.push(owner);
         board.sort((a, b) => 0.5 - Math.random());
-        // setBoard({
-        //     items: [...board],
-        //     gameColor
-        // });
+
+        updateGame({...game, board: {items: board, gameColor}})
     }
 
     return (
@@ -86,22 +80,22 @@ const Boards = () => {
             <Board>
                 <GameLight
                     sx={{marginRight: '472px'}}
-                    background={board.gameColor}
+                    background={game.board?.gameColor}
                 />
                 <GameLight
                     sx={{marginLeft: '469px'}}
-                    background={board.gameColor}
+                    background={game.board?.gameColor}
                 />
                 <GameLight
                     sx={{marginBottom: '472px', transform: 'rotate(90deg)'}}
-                    background={board.gameColor}
+                    background={game.board?.gameColor}
                 />
                 <GameLight
                     sx={{marginTop: '467px', transform: 'rotate(90deg)'}}
-                    background={board.gameColor}
+                    background={game.board?.gameColor}
                 />
                 {
-                    board?.items.map((item) => <Item background={COLORS[item]}/>)
+                    game.board?.items.map((item) => <Item background={COLORS[item]}/>)
                 }
             </Board>
             <Outlet/>

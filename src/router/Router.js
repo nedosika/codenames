@@ -18,7 +18,7 @@ const Router = () => {
                 <Route path="games/:id" element={<Games/>}>
                     <Route path="add" element={<AddWordsDialog/>}/>
                 </Route>
-                <Route path="boards" element={<Boards/>}>
+                <Route path="boards/:id" element={<Boards/>}>
 
                 </Route>
             </Routes>
