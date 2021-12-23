@@ -9,11 +9,32 @@ import {experimentalStyled as styled} from '@mui/material/styles';
 import Layout from "../../layout";
 import ButtonsPanel from "./ButtonsPanel";
 import {useGames} from "../../hooks/useGames";
-import background from "../../assets/images/card.png";
+import cardBackground from "../../assets/images/card.png";
+import redManBackground from "../../assets/images/red_man.png";
+import redWomanBackground from "../../assets/images/red_woman.png";
+import blueManBackground from "../../assets/images/blue_man.png";
+import blueWomanBackground from "../../assets/images/blue_woman.png";
+import grayManBackground from "../../assets/images/gray_man.png";
+import greyWomanBackground from "../../assets/images/gray_woman.png";
+import blackManBackground from "../../assets/images/black_man.png";
 
-const COLORS = ['red', 'blue', 'yellow', 'black'];
+const COLORS = [redManBackground, blueWomanBackground, grayManBackground, blackManBackground];
 
-const Item = styled(Paper)(({borderColor, theme}) => ({
+const Card = styled(Paper)(({theme}) => ({
+    ...theme.typography.body2,
+    cursor: 'pointer',
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    backgroundImage: `url(${cardBackground})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "contain",
+    height: 100,
+    minWidth: 166,
+    margin: '5px',
+}));
+
+const CoveredCard = styled(Paper)(({background, theme}) => ({
     ...theme.typography.body2,
     cursor: 'pointer',
     padding: theme.spacing(2),
@@ -25,7 +46,6 @@ const Item = styled(Paper)(({borderColor, theme}) => ({
     height: 100,
     minWidth: 166,
     margin: '5px',
-    boxShadow: `inset 0px 0px 25px 5px ${borderColor}`
 }));
 
 const Games = () => {
@@ -64,16 +84,24 @@ const Games = () => {
             }}>
                 {
                     game?.words?.map((word) =>
-                        <Item
-                            elevation={3}
-                            key={word.id}
-                            onClick={handleClick(word.id)}
-                            borderColor={COLORS[word.color]}
-                        >
-                            <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
-                                {word.value}
-                            </CardContent>
-                        </Item>
+                        COLORS[word?.color]
+                            ?
+                            <CoveredCard
+                                elevation={3}
+                                key={word.id}
+                                background={COLORS[word.color]}
+                                onClick={handleClick(word.id)}
+                            />
+                            :
+                            <Card
+                                elevation={3}
+                                key={word.id}
+                                onClick={handleClick(word.id)}
+                            >
+                                <CardContent style={{marginTop: 48, fontWeight: 'bold'}}>
+                                    {word.value}
+                                </CardContent>
+                            </Card>
                     )
                 }
             </Box>
