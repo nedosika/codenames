@@ -41,13 +41,6 @@ function EditToolbar({numSelected, onDeleteWords, onOpenCreateProcessDialog}) {
     );
 }
 
-const ButtonsPanel = styled(Box)(() => ({
-    position: "fixed",
-    bottom: 32,
-    right: 16,
-    '& > :not(style)': {m: 1}
-}));
-
 export default function Words() {
     const navigate = useNavigate();
     const {words, deleteWords, updateWord} = useWords();
@@ -55,7 +48,6 @@ export default function Words() {
     const [selected, setSelected] = React.useState(0);
 
     const handleEditRowsModelChange = React.useCallback((model) => {
-
         setEditRowsModel(model);
     }, []);
 
@@ -72,13 +64,15 @@ export default function Words() {
     };
 
     const handleRowEditStop = ({id}) => {
-        const {value: {value}} = editRowsModel[id];
-        updateWord({id, value}).then(() => console.log('updated'))
+
+        const {value: {value}, ru: {value: ru} } = editRowsModel[id];
+
+        updateWord({id, value, ru}).then(() => console.log('updated'))
     }
 
     const columns = [
-        {field: 'value', headerName: 'Word', width: 180, editable: true},
-        {field: 'ru', headerName: 'Russian', editable: true},
+        {field: 'value', headerName: 'Words', width: 180, editable: true},
+        {field: 'ru', headerName: 'Russian', width: 180, editable: true},
         {
             field: 'create',
             headerName: 'Date Created',
