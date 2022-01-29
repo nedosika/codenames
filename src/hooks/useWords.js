@@ -25,12 +25,20 @@ export const useWords = () => {
     const addWords = (words) =>
         Promise.all(
             words.map((word) =>
-                FirestoreService.addDocument("words", {value: word}))
+                FirestoreService.addDocument("words", {value: word})
+            )
         );
 
     const deleteWord = (id) =>
         FirestoreService
             .deleteDocument("words", id);
+
+    const deleteWords = (words) =>
+        Promise.all(
+            words.map((word) =>
+                FirestoreService.deleteDocument("words", word)
+            )
+        )
 
     return {
         words,
@@ -38,6 +46,7 @@ export const useWords = () => {
         addWords,
         updateWord,
         deleteWord,
+        deleteWords,
         getWords,
         getShuffledWords
     }

@@ -9,6 +9,10 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 import Layout from "../../layout";
 import {useWords} from "../../hooks/useWords";
+import {experimentalStyled as styled} from "@mui/material";
+import Fab from "@mui/material/Fab";
+import AddIcon from '@mui/icons-material/Add';
+import {Outlet, useNavigate} from "react-router";
 
 function EditToolbar({numSelected, onDeleteWords}) {
     return (
@@ -36,12 +40,21 @@ function EditToolbar({numSelected, onDeleteWords}) {
     );
 }
 
+const ButtonsPanel = styled(Box)(() => ({
+    position: "fixed",
+    bottom: 16,
+    right: 16,
+    '& > :not(style)': {m: 1}
+}));
+
 export default function Words() {
-    const {words, deleteWord} = useWords();
+    const navigate = useNavigate();
+    const {words, deleteWords, updateWord} = useWords();
     const [editRowsModel, setEditRowsModel] = React.useState({});
     const [selected, setSelected] = React.useState(0);
 
     const handleEditRowsModelChange = React.useCallback((model) => {
+
         setEditRowsModel(model);
     }, []);
 
@@ -50,8 +63,16 @@ export default function Words() {
     }, []);
 
     const handleDeleteSelectedWords = () => {
-        console.log('delete')
-       // setEditRowsModel()
+        deleteWords(selected).then(() => console.log('deleted'))
+    }
+
+    const handleOpenCreateProcessDialog = () => {
+        navigate(`add`);
+    };
+
+    const handleRowEditStop = ({id}) => {
+        const {value: {value}} = editRowsModel[id];
+        updateWord({id, value}).then(() => console.log('updated'))
     }
 
     const columns = [
@@ -87,8 +108,15 @@ export default function Words() {
                     onEditRowsModelChange={handleEditRowsModelChange}
                     checkboxSelection
                     onStateChange={handleStateChange}
+                    onRowEditStop={handleRowEditStop}
                 />
             </div>
+            <Outlet/>
+            <ButtonsPanel>
+                <Fab color="primary" onClick={handleOpenCreateProcessDialog}>
+                    <AddIcon/>
+                </Fab>
+            </ButtonsPanel>
         </Layout>
     );
 }
