@@ -1,20 +1,21 @@
 import * as React from 'react';
-import {DataGrid} from '@mui/x-data-grid';
+import {Outlet, useNavigate} from "react-router";
 
 import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
+import {DataGrid} from '@mui/x-data-grid';
+import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
+import AddIcon from '@mui/icons-material/Add';
 import IconButton from "@mui/material/IconButton";
+import {experimentalStyled as styled} from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 import Layout from "../../layout";
 import {useWords} from "../../hooks/useWords";
-import {experimentalStyled as styled} from "@mui/material";
-import Fab from "@mui/material/Fab";
-import AddIcon from '@mui/icons-material/Add';
-import {Outlet, useNavigate} from "react-router";
 
-function EditToolbar({numSelected, onDeleteWords}) {
+function EditToolbar({numSelected, onDeleteWords, onOpenCreateProcessDialog}) {
     return (
         <Box
             sx={{
@@ -35,14 +36,14 @@ function EditToolbar({numSelected, onDeleteWords}) {
                     </IconButton>
                 </Tooltip>
             )}
-
+            <Button color="primary" onClick={onOpenCreateProcessDialog}>Add</Button>
         </Box>
     );
 }
 
 const ButtonsPanel = styled(Box)(() => ({
     position: "fixed",
-    bottom: 16,
+    bottom: 32,
     right: 16,
     '& > :not(style)': {m: 1}
 }));
@@ -99,7 +100,13 @@ export default function Words() {
             <div style={{height: 'calc(100vh - 95px)', marginTop: 80}}>
                 <DataGrid
                     components={{Toolbar: EditToolbar}}
-                    componentsProps={{toolbar: {numSelected: selected?.length, onDeleteWords: handleDeleteSelectedWords}}}
+                    componentsProps={{
+                        toolbar: {
+                            numSelected: selected?.length,
+                            onDeleteWords: handleDeleteSelectedWords,
+                            onOpenCreateProcessDialog: handleOpenCreateProcessDialog
+                        }
+                    }}
                     rows={words}
                     columns={columns}
                     editRowsModel={editRowsModel}
@@ -112,11 +119,6 @@ export default function Words() {
                 />
             </div>
             <Outlet/>
-            <ButtonsPanel>
-                <Fab color="primary" onClick={handleOpenCreateProcessDialog}>
-                    <AddIcon/>
-                </Fab>
-            </ButtonsPanel>
         </Layout>
     );
 }
